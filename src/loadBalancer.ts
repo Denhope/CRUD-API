@@ -1,4 +1,3 @@
-// loadBalancer.ts
 import http from 'http';
 import os from 'os';
 
@@ -10,7 +9,7 @@ const distributeRequests = (
   req: http.IncomingMessage,
   res: http.ServerResponse
 ) => {
-  const targetPort = PORT + (currentWorker % numCPUs) + 1; // Распределение портов рабочих процессов
+  const targetPort = PORT + (currentWorker % numCPUs) + 1;
   currentWorker++;
 
   console.log(`Redirecting request to worker on port ${targetPort}`);
@@ -31,7 +30,6 @@ const distributeRequests = (
   req.pipe(proxyReq, { end: true });
 };
 
-// Создаем сервер балансировщика нагрузки
 const loadBalancer = http.createServer((req, res) => {
   if (req.url && req.url.startsWith('/api')) {
     distributeRequests(req, res);
